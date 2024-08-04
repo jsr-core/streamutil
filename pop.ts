@@ -2,7 +2,7 @@
  * Reads the next chunk from a readable stream.
  *
  * ```ts
- * import { pop } from "./pop.ts";
+ * import { pop } from "@core/streamutil/pop";
  *
  * const reader = new ReadableStream<number>({
  *   start(controller) {
@@ -19,9 +19,8 @@
  * console.log(await pop(reader)); // null
  * ```
  *
- * @template T The type of the chunk to read.
- * @param {ReadableStream<T>} stream The stream to read from.
- * @returns {Promise<T | null>} A promise that resolves with the next chunk from the stream or null if the stream is closed.
+ * @param stream The stream to read from.
+ * @returns A promise that resolves with the next chunk from the stream or null if the stream is closed.
  */
 export async function pop<T>(stream: ReadableStream<T>): Promise<T | null> {
   const reader = stream.getReader();

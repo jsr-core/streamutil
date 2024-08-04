@@ -5,8 +5,8 @@ import { collect } from "./collect.ts";
  * Reads all available bytes from a given `ReadableStream<Uint8Array>` and concatenates them into a single `Uint8Array`.
  *
  * ```ts
- * import { assertEquals } from "https://deno.land/std@0.187.0/testing/asserts.ts";
- * import { readAll } from "./read_all.ts";
+ * import { assertEquals } from "@std/assert";
+ * import { readAll } from "@core/streamutil/read-all";
  *
  * const encoder = new TextEncoder();
  * const stream = new ReadableStream({
@@ -20,17 +20,12 @@ import { collect } from "./collect.ts";
  * assertEquals(result, encoder.encode("HelloWorld"));
  * ```
  *
- * @param {ReadableStream<Uint8Array>} stream The stream to read from.
- * @param {PipeOptions} [options={}] Options for configuring the piping behavior.
- * @param {AbortSignal} [options.signal] AbortSignal to abort ongoing pipe operation.
- * @param {boolean} [options.preventCancel] Prevent the source from being canceled.
- * @param {boolean} [options.preventClose] Prevent the source from being closed.
- * @param {boolean} [options.preventAbort] Prevent the source from being aborted.
- * @returns {Promise<Uint8Array>} A promise that resolves to a `Uint8Array` containing all the bytes read from the stream.
+ * @param stream The stream to read from.
+ * @returns A promise that resolves to a `Uint8Array` containing all the bytes read from the stream.
  */
 export async function readAll(
   stream: ReadableStream<Uint8Array>,
-  options: PipeOptions = {},
+  options: StreamPipeOptions = {},
 ): Promise<Uint8Array> {
   const chunks = await collect(stream, options);
   return concat(chunks);

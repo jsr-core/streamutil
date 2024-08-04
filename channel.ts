@@ -1,5 +1,15 @@
+/**
+ * A channel is a pair of a readable and writable stream.
+ * It is useful for creating a communication channel between two parts of a program.
+ */
 export type Channel<T> = {
+  /**
+   * The readable side of the channel.
+   */
   reader: ReadableStream<T>;
+  /**
+   * The writable side of the channel.
+   */
   writer: WritableStream<T>;
 };
 
@@ -7,9 +17,9 @@ export type Channel<T> = {
  * Creates a new channel, which is a pair of a readable and writable stream.
  *
  * ```ts
- * import { channel } from "./channel.ts";
- * import { push } from "./push.ts";
- * import { pop } from "./pop.ts";
+ * import { channel } from "@core/streamutil/channel";
+ * import { push } from "@core/streamutil/push";
+ * import { pop } from "@core/streamutil/pop";
  *
  * const { reader, writer } = channel<number>();
  *
@@ -21,10 +31,9 @@ export type Channel<T> = {
  * console.log(await pop(reader)); // 3
  * ```
  *
- * @template T The type of the elements that the channel can handle.
- * @param {QueuingStrategy<T>} [writableStrategy] The strategy for the writable side of the channel.
- * @param {QueuingStrategy<T>} [readableStrategy] The strategy for the readable side of the channel.
- * @returns {{ reader: ReadableStream<T>, writer: WritableStream<T> }} A channel object containing a readable stream and a writable stream.
+ * @param writableStrategy The strategy for the writable side of the channel.
+ * @param readableStrategy The strategy for the readable side of the channel.
+ * @returns A channel object containing a readable stream and a writable stream.
  */
 export function channel<T>(
   writableStrategy?: QueuingStrategy<T>,

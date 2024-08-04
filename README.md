@@ -1,37 +1,12 @@
-# streamtools
+# streamutil
 
-[![jsr](https://img.shields.io/jsr/v/%40lambdalisue/streamtools?logo=javascript&logoColor=white)](https://jsr.io/@lambdalisue/streamtools)
-[![denoland](https://img.shields.io/github/v/release/lambdalisue/deno-streamtools?logo=deno&label=denoland)](https://github.com/lambdalisue/deno-streamtools/releases)
-[![deno doc](https://doc.deno.land/badge.svg)](https://doc.deno.land/https/deno.land/x/streamtools/mod.ts)
-[![Test](https://github.com/lambdalisue/deno-streamtools/workflows/Test/badge.svg)](https://github.com/lambdalisue/deno-streamtools/actions?query=workflow%3ATest)
+[![JSR](https://jsr.io/badges/@core/streamutil)](https://jsr.io/@core/streamutil)
+[![Test](https://github.com/jsr-core/streamutil/workflows/Test/badge.svg)](https://github.com/jsr-core/streamutil/actions?query=workflow%3ATest)
+[![Codecov](https://codecov.io/github/jsr-core/streamutil/graph/badge.svg?token=Ug4J3xkG8T)](https://codecov.io/github/jsr-core/streamutil)
 
-This is a TypeScript module that provides utilities for handling Streams API.
+A utility pack for handling [Streams API](https://streams.spec.whatwg.org/).
 
 ## Usage
-
-### pipeThroughFrom
-
-Pipes the readable side of a `TransformStream` to a `WritableStream`. Returns
-the writable side of the `TransformStream` for further piping.
-
-```ts
-import { channel } from "./channel.ts";
-import { collect } from "./collect.ts";
-import { pipeThroughFrom } from "./pipe_through_from.ts";
-
-const encoder = new TextEncoder();
-const output = channel<string>();
-const stream = pipeThroughFrom(output.writer, new TextDecoderStream());
-const writer = stream.getWriter();
-
-await writer.write(encoder.encode("Hello"));
-await writer.write(encoder.encode("World"));
-await writer.close();
-writer.releaseLock();
-
-const result = await collect(output.reader);
-console.log(result); // ["Hello", "World"]
-```
 
 ### channel
 
@@ -39,9 +14,9 @@ console.log(result); // ["Hello", "World"]
 stream.
 
 ```ts
-import { channel } from "./channel.ts";
-import { push } from "./push.ts";
-import { pop } from "./pop.ts";
+import { channel } from "@core/streamutil/channel";
+import { push } from "@core/streamutil/push";
+import { pop } from "@core/streamutil/pop";
 
 const { reader, writer } = channel<number>();
 
@@ -59,7 +34,7 @@ console.log(await pop(reader)); // 3
 of chunks.
 
 ```ts
-import { collect } from "./collect.ts";
+import { collect } from "@core/streamutil/collect";
 
 const reader = new ReadableStream<number>({
   start(controller) {
@@ -78,7 +53,7 @@ readable stream created from the values. Returns a promise that resolves when
 all the values have been successfully written to the stream.
 
 ```ts
-import { provide } from "./provide.ts";
+import { provide } from "@core/streamutil/provide";
 
 const results: number[] = [];
 const writer = new WritableStream<number>({
@@ -91,12 +66,36 @@ await provide(writer, [1, 2, 3]);
 console.log(results); // [1, 2, 3]
 ```
 
+### pipeThroughFrom
+
+Pipes the readable side of a `TransformStream` to a `WritableStream`. Returns
+the writable side of the `TransformStream` for further piping.
+
+```ts
+import { channel } from "@core/streamutil/channel";
+import { collect } from "@core/streamutil/collect";
+import { pipeThroughFrom } from "@core/streamutil/pipe-through-from";
+
+const encoder = new TextEncoder();
+const output = channel<string>();
+const stream = pipeThroughFrom(output.writer, new TextDecoderStream());
+const writer = stream.getWriter();
+
+await writer.write(encoder.encode("Hello"));
+await writer.write(encoder.encode("World"));
+await writer.close();
+writer.releaseLock();
+
+const result = await collect(output.reader);
+console.log(result); // ["Hello", "World"]
+```
+
 ### pop/push
 
 `pop` reads the next chunk from a readable stream.
 
 ```ts
-import { pop } from "./pop.ts";
+import { pop } from "@core/streamutil/pop";
 
 const reader = new ReadableStream<number>({
   start(controller) {
@@ -116,7 +115,7 @@ console.log(await pop(reader)); // null
 `push` writes a chunk to a writable stream.
 
 ```ts
-import { push } from "./push.ts";
+import { push } from "@core/streamutil/push";
 
 const results: number[] = [];
 const writer = new WritableStream<number>({
@@ -137,8 +136,8 @@ console.log(results); // [1, 2, 3]
 and concatenates them into a single `Uint8Array`.
 
 ```ts
-import { assertEquals } from "jsr:@std/assert";
-import { readAll } from "./read_all.ts";
+import { assertEquals } from "@std/assert";
+import { readAll } from "@core/streamutil/read-all";
 
 const encoder = new TextEncoder();
 const stream = new ReadableStream({
@@ -156,8 +155,8 @@ assertEquals(result, encoder.encode("HelloWorld"));
 units.
 
 ```ts
-import { assertEquals } from "jsr:@std/assert";
-import { writeAll } from "./write_all.ts";
+import { assertEquals } from "@std/assert";
+import { writeAll } from "@core/streamutil/write-all";
 
 const encoder = new TextEncoder();
 const chunks: Uint8Array[] = [];
