@@ -1,5 +1,5 @@
 import { assertEquals, assertRejects } from "@std/assert";
-import { deadline, DeadlineError } from "@std/async";
+import { deadline } from "@std/async";
 import { provide } from "./provide.ts";
 import { pop } from "./pop.ts";
 import { push } from "./push.ts";
@@ -21,7 +21,11 @@ Deno.test("channel", async (t) => {
     async () => {
       const { reader, writer } = channel<number>();
       const waiter = pop(reader);
-      await assertRejects(() => deadline(waiter, 100), DeadlineError);
+      await assertRejects(
+        () => deadline(waiter, 100),
+        DOMException,
+        "Signal timed out.",
+      );
       await push(writer, 1);
       assertEquals(await deadline(waiter, 100), 1);
     },
@@ -32,9 +36,17 @@ Deno.test("channel", async (t) => {
     async () => {
       const { reader, writer } = channel<number>();
       const waiter = collect(reader);
-      await assertRejects(() => deadline(waiter, 100), DeadlineError);
+      await assertRejects(
+        () => deadline(waiter, 100),
+        DOMException,
+        "Signal timed out.",
+      );
       await push(writer, 1);
-      await assertRejects(() => deadline(waiter, 100), DeadlineError);
+      await assertRejects(
+        () => deadline(waiter, 100),
+        DOMException,
+        "Signal timed out.",
+      );
       writer.close();
       assertEquals(await deadline(waiter, 100), [1]);
     },
