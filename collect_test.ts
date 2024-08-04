@@ -1,5 +1,5 @@
 import { assertEquals, assertRejects } from "@std/assert";
-import { deadline, DeadlineError } from "@std/async";
+import { deadline } from "@std/async";
 import { collect } from "./collect.ts";
 
 Deno.test("collect returns an empty array for an empty stream", async () => {
@@ -40,6 +40,7 @@ Deno.test("collect waits forever when the stream is not closed", async () => {
   const stream = new ReadableStream<string>();
   await assertRejects(
     () => deadline(collect(stream), 100),
-    DeadlineError,
+    DOMException,
+    "Signal timed out.",
   );
 });

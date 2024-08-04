@@ -2,7 +2,7 @@
  * Writes a chunk to a writable stream.
  *
  * ```ts
- * import { push } from "./push.ts";
+ * import { push } from "@core/streamutil/push";
  *
  * const results: number[] = [];
  * const writer = new WritableStream<number>({
@@ -17,10 +17,9 @@
  * console.log(results); // [1, 2, 3]
  * ```
  *
- * @template T The type of the chunk to write.
- * @param {WritableStream<T>} stream The stream to write to.
- * @param {T} value The chunk to write to the stream.
- * @returns {Promise<void>} A promise that resolves once the chunk has been written to the stream.
+ * @param stream The stream to write to.
+ * @param value The chunk to write to the stream.
+ * @returns A promise that resolves once the chunk has been written to the stream.
  */
 export async function push<T>(
   stream: WritableStream<T>,

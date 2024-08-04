@@ -1,5 +1,8 @@
-export type WriteAllOptions = PipeOptions & {
-  /** The size of each chunk to write to the stream */
+/**
+ * Options for configuring the piping behavior.
+ */
+export type WriteAllOptions = StreamPipeOptions & {
+  /** The size of each chunk to write to the stream (Default: 1024) */
   chunkSize?: number;
 };
 
@@ -7,8 +10,8 @@ export type WriteAllOptions = PipeOptions & {
  * Writes all data in a Uint8Array to a writable stream in chunk-size units.
  *
  * ```ts
- * import { assertEquals } from "https://deno.land/std@0.187.0/testing/asserts.ts";
- * import { writeAll } from "./write_all.ts";
+ * import { assertEquals } from "@std/assert";
+ * import { writeAll } from "@core/streamutil/write-all";
  *
  * const encoder = new TextEncoder();
  * const chunks: Uint8Array[] = [];
@@ -26,15 +29,9 @@ export type WriteAllOptions = PipeOptions & {
  * ]);
  * ```
  *
- * @param {WritableStream<Uint8Array>} stream The stream to write to.
- * @param {Uint8Array} data The data to write.
- * @param {WriteAllOptions} [options={}] Options for configuring the piping behavior.
- * @param {AbortSignal} [options.signal] AbortSignal to abort ongoing pipe operation.
- * @param {boolean} [options.preventCancel] Prevent the source from being canceled.
- * @param {boolean} [options.preventClose] Prevent the source from being closed.
- * @param {boolean} [options.preventAbort] Prevent the source from being aborted.
- * @param {number} [options.chunkSize=1024] The size of each chunk to write to the stream.
- * @returns {Promise<void>} A promise that resolves when all the data has been written to the stream.
+ * @param stream The stream to write to.
+ * @param data The data to write.
+ * @returns A promise that resolves when all the data has been written to the stream.
  */
 export async function writeAll(
   stream: WritableStream<Uint8Array>,
