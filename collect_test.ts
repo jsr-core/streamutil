@@ -1,6 +1,6 @@
 import { test } from "@cross/test";
 import { assertEquals, assertRejects } from "@std/assert";
-import { deadline } from "@std/async";
+import { deadline } from "./_testutil.ts";
 import { collect } from "./collect.ts";
 
 test("collect returns an empty array for an empty stream", async () => {

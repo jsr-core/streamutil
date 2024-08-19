@@ -1,6 +1,6 @@
 import { test } from "@cross/test";
 import { assertEquals, assertRejects } from "@std/assert";
-import { deadline } from "@std/async";
+import { deadline } from "./_testutil.ts";
 import { provide } from "./provide.ts";
 import { pop } from "./pop.ts";
 import { push } from "./push.ts";
