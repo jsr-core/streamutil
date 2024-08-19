@@ -1,7 +1,8 @@
+import { test } from "@cross/test";
 import { assertEquals } from "@std/assert";
 import { provide } from "./provide.ts";
 
-Deno.test("provide writes all values to stream", async () => {
+test("provide writes all values to stream", async () => {
   const chunks: number[] = [];
   const stream = new WritableStream<number>({
     write(chunk) {

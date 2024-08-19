@@ -28,9 +28,6 @@
     ]
   },
   "imports": {
-    "@std/assert": "jsr:@std/assert@^1.0.0",
-    "@std/async": "jsr:@std/async@^1.0.0",
-    "@std/bytes": "jsr:@std/bytes@^1.0.0",
     "@core/streamutil": "./mod.ts",
     "@core/streamutil/channel": "./channel.ts",
     "@core/streamutil/collect": "./collect.ts",
@@ -39,7 +36,11 @@
     "@core/streamutil/provide": "./provide.ts",
     "@core/streamutil/push": "./push.ts",
     "@core/streamutil/read-all": "./read_all.ts",
-    "@core/streamutil/write-all": "./write_all.ts"
+    "@core/streamutil/write-all": "./write_all.ts",
+    "@cross/test": "jsr:@cross/test@^0.0.9",
+    "@std/assert": "jsr:@std/assert@^1.0.0",
+    "@std/async": "jsr:@std/async@^1.0.0",
+    "@std/bytes": "jsr:@std/bytes@^1.0.0"
   },
   "tasks": {
     "check": "deno check ./**/*.ts",

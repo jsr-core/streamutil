@@ -1,8 +1,9 @@
+import { test } from "@cross/test";
 import { assertEquals, assertRejects } from "@std/assert";
 import { deadline } from "@std/async";
 import { collect } from "./collect.ts";
 
-Deno.test("collect returns an empty array for an empty stream", async () => {
+test("collect returns an empty array for an empty stream", async () => {
   const stream = new ReadableStream<string>({
     start(controller) {
       controller.close();
@@ -12,7 +13,7 @@ Deno.test("collect returns an empty array for an empty stream", async () => {
   assertEquals(result, []);
 });
 
-Deno.test("collect returns all chunks in order for a non-empty stream", async () => {
+test("collect returns all chunks in order for a non-empty stream", async () => {
   const chunks = ["a", "b", "c"];
   const stream = new ReadableStream<string>({
     start(controller) {
@@ -24,7 +25,7 @@ Deno.test("collect returns all chunks in order for a non-empty stream", async ()
   assertEquals(result, chunks);
 });
 
-Deno.test("collect throws an error when the stream emits an error", async () => {
+test("collect throws an error when the stream emits an error", async () => {
   const error = new Error("test error");
   const stream = new ReadableStream<string>({
     start(controller) {
@@ -36,7 +37,7 @@ Deno.test("collect throws an error when the stream emits an error", async () => 
   );
 });
 
-Deno.test("collect waits forever when the stream is not closed", async () => {
+test("collect waits forever when the stream is not closed", async () => {
   const stream = new ReadableStream<string>();
   await assertRejects(
     () => deadline(collect(stream), 100),

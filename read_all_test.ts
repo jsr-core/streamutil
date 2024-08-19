@@ -1,7 +1,8 @@
+import { test } from "@cross/test";
 import { assertEquals } from "@std/assert";
 import { readAll } from "./read_all.ts";
 
-Deno.test("readAll", async () => {
+test("readAll", async () => {
   const encoder = new TextEncoder();
   const stream = new ReadableStream({
     start(controller) {
